@@ -26,9 +26,7 @@ username = "etillison3350"
 directions = (("left", -1, 0), ("right", 1, 0), ("up", 0, -1), ("down", 0, 1))
 
 if __name__ == "__main__":
-	print("Running gitland bot. Press ^C to stop.")
-	
-	time.sleep(1)
+	os.system("echo Running gitland bot. Press ^C to stop.")
 	
 	work_dir = os.path.abspath(".")
 	server_dir = os.path.abspath("./gitland")
@@ -83,6 +81,8 @@ if __name__ == "__main__":
 		os.system("git commit -m \"Next turn\"")
 		os.system("git push origin master")
 		
-		time.sleep(60)
+		time.sleep(1)
 		
-		print("Moved " + last_direction)
+		os.system("echo Moving " + last_direction)
+		
+		time.sleep(59)
