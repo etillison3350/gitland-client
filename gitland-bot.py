@@ -19,13 +19,16 @@
 # SOFTWARE.
 
 import os
+import subprocess
 import time
 
 username = "etillison3350"
 
 directions = (("left", -1, 0), ("right", 1, 0), ("up", 0, -1), ("down", 0, 1))
+colors = {"r": """\033[91m""", "g": """\033[92m""", "b": """\033[94m"""}
 
 if __name__ == "__main__":
+	os.system("color")
 	os.system("echo Running gitland bot. Press ^C to stop.")
 	
 	work_dir = os.path.abspath(".")
@@ -83,6 +86,19 @@ if __name__ == "__main__":
 		
 		time.sleep(1)
 		
-		os.system("echo Moving " + last_direction)
+		os.system("echo At ({}, {}), Moving {}".format(x, y, last_direction))
+		
+		os.system("echo Current board:")
+		
+		for py in range(len(map)):
+			row = map[py]
+			echo = ""
+			for px in range(len(row)):
+				color = row[px][1]
+				if color in colors.keys():
+					echo += colors[color] + ("O" if px == x and py == y else "X")
+				else:
+					echo += """\033[0mX"""
+			subprocess.call(["echo", "-e", echo], shell = False)
 		
 		time.sleep(59)
