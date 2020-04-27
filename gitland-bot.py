@@ -81,4 +81,6 @@ if __name__ == "__main__":
 		os.system("git commit -m \"Next turn\"")
 		os.system("git push origin master")
 		
+		print("Moved " + last_direction)
+		
 		time.sleep(60)
