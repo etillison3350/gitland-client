@@ -35,6 +35,10 @@ if __name__ == "__main__":
 	
 	last_direction = "right"
 	
+	os.chdir(work_dir)
+	os.system("eval `ssh-agent -s`")
+	os.system("ssh-add ./.ssh/id_rsa")
+	
 	while True:
 		os.chdir(server_dir)
 		os.system("git pull origin master")

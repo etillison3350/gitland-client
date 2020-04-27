@@ -1,6 +1,9 @@
 # Gitland server source
 gitland/
 
+# SSH Keys
+.ssh/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
