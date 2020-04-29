@@ -42,17 +42,24 @@ if __name__ == "__main__":
 		os.chdir(server_dir)
 		os.system("git pull origin master")
 		
+		delay_compensation = [(dx, dy) for dir, dx, dy in directions if dir == last_direction][0]
+		
+		with open(os.path.join(server_dir, "map"), 'r') as mapfile:
+			map = [row.split(",") for row in mapfile.read().split()]
+		
 		with open(os.path.join(player_dir, "team"), 'r') as teamfile:
 			team = teamfile.read()[1]
 		
-		with open(os.path.join(player_dir, "x"), 'r') as xfile:
-			x = int(xfile.read())
-			
 		with open(os.path.join(player_dir, "y"), 'r') as yfile:
-			y = int(yfile.read())
+			ay = int(yfile.read())
+			y = min(len(map), max(0, ay + delay_compensation[1]))
+		
+		with open(os.path.join(player_dir, "x"), 'r') as xfile:
+			ax = int(xfile.read())
+			x = min(len(map[y]), max(0, ax + delay_compensation[0]))
 			
-		with open(os.path.join(server_dir, "map"), 'r') as mapfile:
-			map = [row.split(",") for row in mapfile.read().split()]
+		if map[y][x][0] != 'u':
+			x, y = ax, ay
 		
 		valid_directions = [(dir, dx, dy, map[y + dy][x + dx][1]) for dir, dx, dy in directions
 				if x + dx >= 0 and x + dx < len(map[y]) and y + dy >= 0 and y + dy < len(map)
@@ -84,9 +91,9 @@ if __name__ == "__main__":
 		os.system("git commit -m \"Next turn\"")
 		os.system("git push origin master")
 		
-		time.sleep(1)
+		time.sleep(10)
 		
-		os.system("echo At ({}, {}), Moving {}".format(x, y, last_direction))
+		os.system("echo At ({}, {}), Moving {}".format(ax, ay, last_direction))
 		
 		os.system("echo Current board:")
 		
@@ -96,9 +103,9 @@ if __name__ == "__main__":
 			for px in range(len(row)):
 				color = row[px][1]
 				if color in colors.keys():
-					echo += colors[color] + ("O" if px == x and py == y else "X")
+					echo += colors[color] + ("O" if px == ax and py == ay else "X")
 				else:
 					echo += """\033[0mX"""
-			subprocess.call(["echo", "-e", echo], shell = False)
+			subprocess.call(["echo", "-e", echo + """\033[0m"""], shell = False)
 		
 		time.sleep(59)
